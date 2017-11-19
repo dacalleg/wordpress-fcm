@@ -24,20 +24,25 @@ use paragraph1\phpFCM\Notification;
 
 function post_published_notification($ID, $post)
 {
+
     $options = get_option("fcm_settings");
     $api_key = $options["api_key"];
+
 
     $client = new Client();
     $client->setApiKey($api_key);
     $client->injectHttpClient(new \GuzzleHttp\Client());
 
-    $message = new Message();
-    $message->addRecipient(new Topic($post->post_type));
-    $message->setNotification(new Notification($post->post_title, $post->post_excerpt))
-        ->setData(array('ID' => $ID));
+    $categories = get_the_category($ID);
 
-    $response = $client->send($message);
-    var_dump($response->getStatusCode());
+    foreach($categories as $category) {
+        $message = new Message();
+        $message->addRecipient(new Topic($post->post_type . "_" . $category["slug"]));
+        $message->setNotification(new Notification($post->post_title, $post->post_excerpt))
+            ->setData(array('ID' => $ID));
+
+        $client->send($message);
+    }
 }
 
 add_action( 'publish_post', 'post_published_notification', 10, 2 );
