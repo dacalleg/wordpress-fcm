@@ -1,0 +1,15 @@
+{
+  "name": "dacalleg/wordpress-fcm",
+  "description": "FCM plugin for Wordpress",
+  "minimum-stability": "dev",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Daniele Callegaro",
+      "email": "daniele.callegaro.90@gmail.com"
+    }
+  ],
+  "require": {
+    "paragraph1/php-fcm": "0.7"
+  }
+}
